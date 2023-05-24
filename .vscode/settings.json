@@ -1,5 +1,6 @@
 {
     "cSpell.words": [
         "quizzler"
-    ]
+    ],
+    "java.compile.nullAnalysis.mode": "automatic"
 }

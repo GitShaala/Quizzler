@@ -1,6 +1,6 @@
 import {View, Text, StyleSheet, Image, Button, Touchable, TouchableOpacity, StatusBar} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
- const color = "#154c79"
+ const color = "#5C469C"
 
  function startGame(navigation){
     navigation.navigate('quiz')
@@ -14,7 +14,7 @@ const HomeScreen = ({navigation}) => {
       <Image style = {{width:200,height:200}} source = {{uri:'https://www.akacasemanagement.com/wp-content/uploads/2021/08/question-mark-5976736_1280-640x640.png'}}></Image>
       </View>
       <TouchableOpacity style = {style.buttonStyle} onPress = {() => startGame(navigation)}>
-        <Text style = {{fontSize:25 , color:'white',fontWeight:'bold'}}>START</Text>
+        <Text style = {style.startButtonTextStyle}>START</Text>
       </TouchableOpacity>
     </SafeAreaView>
   );
@@ -44,14 +44,20 @@ const style = StyleSheet.create({
    alignItems:'center',
   },
   buttonStyle : {
-    width : 250,
-    height : 50,
-    borderRadius :25,
+    width : 200,
+    height : 65,
+    borderRadius :34,
     alignItems:'center',
     justifyContent:'center',
     alignSelf:'center',
-    backgroundColor:'#1e81b0',
-    marginBottom:50
+    backgroundColor:'#1B9C85',
+    marginBottom:50,
+  },
+  startButtonTextStyle : {
+    fontSize:28,
+    letterSpacing : 1.2, 
+    color:'white',
+    fontWeight:'bold'
   }
 });
 export default HomeScreen;

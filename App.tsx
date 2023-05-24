@@ -20,8 +20,8 @@ function App(){
      <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen name='home' component={HomeScreen} options ={{headerShown : false}} />
-         <Stack.Screen name='quiz' component={QuizScreen}/>
-         <Stack.Screen name='result' component={ResultScreen}/>
+         <Stack.Screen name='quiz' component={QuizScreen} options ={{headerShown : false}}/>
+         <Stack.Screen name='result' component={ResultScreen} options ={{headerShown : false}}/>
       </Stack.Navigator>
      </NavigationContainer>
   );
