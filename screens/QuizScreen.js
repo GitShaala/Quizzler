@@ -10,9 +10,13 @@ import {
 import {SafeAreaView} from 'react-native-safe-area-context';
 const navigationButtonColor = '#f3cd7b';
 const quizBackGroundColor = '#000000';
-const questionStyleBackground = '#333333';
+const quizCardStyleBackground = '#333333';
 const headerColor = '#ffbb01';
 const questionCountColor = '#ff2165';
+const optionColors = {
+  right: '#32CD30',
+  wrong: '#FF0000',
+};
 
 const shuffleArray = array => {
   for (var i = array.length - 1; i > 0; i--) {
@@ -30,6 +34,17 @@ const QuizScreen = ({navigation}) => {
   const [questions, setQuestions] = useState();
   const [questionNumber, setQuestionNumber] = useState(0);
   const [options, setOptions] = useState([]);
+  const [correctAnswersCount, setCorrectAnswersCount] = useState(0);
+  const [optionColorStateArray, setOptionColorStateArray] = useState([
+    quizCardStyleBackground,
+    quizCardStyleBackground,
+    quizCardStyleBackground,
+    quizCardStyleBackground,
+  ]);
+  // const resultType = {
+  //   correct: 'Correct',
+  //   incorrect: 'Incorrect',
+  // };
 
   const getQuiz = async () => {
     const response = await fetch(url);
@@ -47,6 +62,34 @@ const QuizScreen = ({navigation}) => {
     setOptions(generateAndShuffle(questions[questionNumber]));
   };
 
+  const decode = input => {
+    return decodeURIComponent(input);
+  };
+
+  const isCorrectAnswer = inputAnswer => {
+    return inputAnswer === decode(questions[questionNumber].correct_answer);
+  };
+
+  const updateOptionBackgroundColor = (answer, clickedIndex) => {
+    const updatedOptionColorStateArray = optionColorStateArray.map(
+      (color, index) => {
+        if (clickedIndex == index) {
+          if (isCorrectAnswer(answer)) {
+            color = optionColors.right;
+          } else {
+            color = optionColors.wrong;
+          }
+          return color;
+        } else {
+          color = quizCardStyleBackground;
+          console.log(color, 'color');
+          return color;
+        }
+      },
+    );
+    setOptionColorStateArray(updatedOptionColorStateArray);
+  };
+
   const generateAndShuffle = _options => {
     const options = [..._options.incorrect_answers];
     options.push(_options.correct_answer);
@@ -54,9 +97,9 @@ const QuizScreen = ({navigation}) => {
     return options;
   };
 
-  const showResults = (navigation) => {
-    navigation.navigate('result')
-  }
+  const showResults = navigation => {
+    navigation.navigate('result');
+  };
 
   return (
     <SafeAreaView style={[styles.quizContainer, {width: width}]}>
@@ -68,35 +111,51 @@ const QuizScreen = ({navigation}) => {
             Question {questionNumber + 1}/{questions.length}
           </Text>
           <Text style={styles.questionTextStyle}>
-            {decodeURIComponent(questions[questionNumber].question)}
+            {decode(questions[questionNumber].question)}
           </Text>
 
           <View style={styles.answerContainerStyle}>
-            <View style={styles.answerStyle}>
-              <TouchableOpacity style={styles.optionStyle}>
-                <Text style={styles.answerTextStyle}>
-                  {decodeURIComponent(options[0])}
-                </Text>
+              <TouchableOpacity
+                style={[
+                  styles.optionStyle,
+                  {backgroundColor: optionColorStateArray[0]},
+                ]}
+                onPress={() =>
+                  updateOptionBackgroundColor(decode(options[0]), 0)
+                }>
+                <Text style={styles.answerTextStyle}>{decode(options[0])}</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.optionStyle}>
-                <Text style={styles.answerTextStyle}>
-                  {decodeURIComponent(options[1])}
-                </Text>
+              <TouchableOpacity
+                style={[
+                  styles.optionStyle,
+                  {backgroundColor: optionColorStateArray[1]},
+                ]}
+                onPress={() =>
+                  updateOptionBackgroundColor(decode(options[1]), 1)
+                }>
+                <Text style={styles.answerTextStyle}>{decode(options[1])}</Text>
               </TouchableOpacity>
-            </View>
 
-            <View style={styles.answerStyle}>
-              <TouchableOpacity style={styles.optionStyle}>
-                <Text style={styles.answerTextStyle}>
-                  {decodeURIComponent(options[2])}
-                </Text>
+              <TouchableOpacity
+                style={[
+                  styles.optionStyle,
+                  {backgroundColor: optionColorStateArray[2]},
+                ]}
+                onPress={() =>
+                  updateOptionBackgroundColor(decode(options[2]), 2)
+                }>
+                <Text style={styles.answerTextStyle}>{decode(options[2])}</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.optionStyle}>
-                <Text style={styles.answerTextStyle}>
-                  {decodeURIComponent(options[3])}
-                </Text>
+              <TouchableOpacity
+                style={[
+                  styles.optionStyle,
+                  {backgroundColor: optionColorStateArray[3]},
+                ]}
+                onPress={() =>
+                  updateOptionBackgroundColor(decode(options[3]), 3)
+                }>
+                <Text style={styles.answerTextStyle}>{decode(options[3])}</Text>
               </TouchableOpacity>
-            </View>
           </View>
 
           <View style={styles.navigationButtonContainer}>
@@ -110,7 +169,9 @@ const QuizScreen = ({navigation}) => {
 
             {questionNumber === 9 && (
               <TouchableOpacity style={styles.navigationButtonStyle}>
-                <Text style={styles.navigationTextStyle} onPress={showResults(navigation)}>
+                <Text
+                  style={styles.navigationTextStyle}
+                  onPress={showResults(navigation)}>
                   SHOW RESULTS
                 </Text>
               </TouchableOpacity>
@@ -135,11 +196,11 @@ const styles = StyleSheet.create({
     width: '90%',
     marginTop: 30,
     alignContent: 'center',
-    backgroundColor: questionStyleBackground,
+    backgroundColor: quizCardStyleBackground,
     borderRadius: 15,
   },
   headerTextStyle: {
-    flex: 0.2,
+    flex: 0.1,
     width: '100%',
     marginTop: 10,
     textAlignVertical: 'center',
@@ -150,8 +211,7 @@ const styles = StyleSheet.create({
     letterSpacing: 2,
     color: headerColor,
     alignContent: 'center',
-    justifyContent: 'center',
-    lineHeight: 10,
+    justifyContent: 'center'
   },
   questionCountStyle: {
     flex: 0.1,
@@ -166,7 +226,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   questionTextStyle: {
-    maxHeight: 200,
+    maxHeight: 150,
     fontSize: 22,
     textAlign: 'center',
     color: 'white',
@@ -176,37 +236,31 @@ const styles = StyleSheet.create({
   },
   answerContainerStyle: {
     width: '100%',
-    flex: 0.5,
+    flex: 0.7,
     flexDirection: 'column',
     alignItems: 'center',
     alignContent: 'center',
     justifyContent: 'space-around',
     padding: 8,
   },
-  answerStyle: {
-    width: '98%',
-    flex: 0.4,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-around',
-  },
   optionStyle: {
-    alignContent: 'center',
-    flex: 0.48,
-    aspectRatio: 2.5,
+    width : '80%',
+    alignItems : 'center',
+    justifyContent : 'center',
+    flex: 0.2,
     borderRadius: 50,
     margin: 5,
     borderWidth: 1,
     borderColor: 'gray',
   },
   answerTextStyle: {
-    width: '100%',
-    height: '100%',
+    width: '90%',
+    height: '90%',
     fontSize: 15,
     color: 'white',
     textAlignVertical: 'center',
     textAlign: 'center',
-    padding: 5,
+    padding: 10
   },
   navigationButtonContainer: {
     width: '90%',

@@ -13,7 +13,7 @@ const questionStyleBackground = '#333333';
 const headerColor = '#ffbb01';
 const fill = 66;
 
-const ResultScreen = ({scores}) => {
+const ResultScreen = () => {
   const {height, width} = useWindowDimensions();
   return (
     <SafeAreaView style={[styles.quizContainer, {width: width}]}>

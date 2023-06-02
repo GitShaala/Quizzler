@@ -3,8 +3,6 @@ import {
   Text,
   StyleSheet,
   Image,
-  Button,
-  Touchable,
   TouchableOpacity,
   StatusBar,
 } from 'react-native';
@@ -12,7 +10,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 const color = '#5C469C';
 
 function startGame(navigation) {
-  navigation.navigate('result');
+  navigation.navigate('quiz');
 }
 const HomeScreen = ({navigation}) => {
   return (
