@@ -7,9 +7,9 @@
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import HomeScreen from './screens/HomeScreen'
-import QuizScreen from './screens/QuizScreen'
-import ResultScreen from './screens/ResultScreen'
+import HomeScreen from './src/screens/home/HomeScreen'
+import QuizScreen from './src/screens/quiz/QuizScreen'
+import ResultScreen from './src/screens/result/ResultScreen'
 
 import React from 'react';
 

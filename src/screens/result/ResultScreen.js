@@ -10,10 +10,15 @@ import {AnimatedCircularProgress} from 'react-native-circular-progress';
 
 const quizBackGroundColor = '#000000';
 const questionStyleBackground = '#333333';
-const headerColor = '#ffbb01';
-const fill = 66;
+const headerColor = '#ffbb01'
 
-const ResultScreen = () => {
+const calculateResult = (correctAnswers,totalQuestions) => {
+    return (correctAnswers/totalQuestions) * 100
+}
+const ResultScreen = ({route}) => {
+  const correctAnswers = route.params.correctAnswer
+  const totalQuestions = route.params.totalQuestions 
+  const fill = calculateResult(correctAnswers,totalQuestions)
   const {height, width} = useWindowDimensions();
   return (
     <SafeAreaView style={[styles.quizContainer, {width: width}]}>
